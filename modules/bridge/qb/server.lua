@@ -97,9 +97,11 @@ SetTimeout(500, function()
 end)
 
 function server.UseItem(source, itemName, data)
-    local cb = QBCore.Functions.CanUseItem(itemName)
-    return cb and cb(source, data)
-end
+    local itemData = QBCore.Functions.CanUseItem(itemName)
+    if type(itemData) == "table" and itemData.func then
+        itemData.func(source, data)
+    end
+end 
 
 AddEventHandler('QBCore:Server:OnMoneyChange', function(src, account, amount, changeType)
     if account ~= "cash" then return end
